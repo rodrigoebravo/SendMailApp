@@ -61,7 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConexionApi.cs" />
+    <Compile Include="ConexionApiGmail.cs" />
     <Compile Include="ProcesoPrincipal.cs" />
     <Compile Include="Xml.cs" />
     <Compile Include="Conexion.cs" />

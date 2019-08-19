@@ -29,7 +29,7 @@ namespace Entidades
 
                 var newMsg = new Google.Apis.Gmail.v1.Data.Message();
                 newMsg.Raw = Base64UrlEncode(plainText.ToString());
-                service.Users.Messages.Send(newMsg, "me").Execute();
+                //service.Users.Messages.Send(newMsg, "me").Execute();
                 return true;
 
             }

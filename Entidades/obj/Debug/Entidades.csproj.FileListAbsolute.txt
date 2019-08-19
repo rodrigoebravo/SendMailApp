@@ -6,6 +6,22 @@ C:\Users\usuario\source\repos\SendMailApp\Entidades\obj\Debug\Entidades.dll
 C:\Users\usuario\source\repos\SendMailApp\Entidades\obj\Debug\Entidades.pdb
 C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Entidades.dll
 C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Entidades.pdb
+C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Google.Apis.Auth.dll
+C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Google.Apis.Auth.PlatformServices.dll
+C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Google.Apis.Core.dll
+C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Google.Apis.dll
+C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Google.Apis.Gmail.v1.dll
+C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Google.Apis.PlatformServices.dll
+C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Newtonsoft.Json.dll
+C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Google.Apis.pdb
+C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Google.Apis.xml
+C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Google.Apis.Auth.pdb
+C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Google.Apis.Auth.xml
+C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Google.Apis.Core.pdb
+C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Google.Apis.Core.xml
+C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Google.Apis.Gmail.v1.pdb
+C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Google.Apis.Gmail.v1.xml
+C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Newtonsoft.Json.xml
 C:\Users\usuario\Desktop\Proyecto final\Entidades\obj\Debug\Entidades.csprojResolveAssemblyReference.cache
 C:\Users\usuario\Desktop\Proyecto final\Entidades\obj\Debug\Entidades.csproj.CoreCompileInputs.cache
 C:\Users\usuario\Desktop\Proyecto final\Entidades\obj\Debug\Entidades.dll

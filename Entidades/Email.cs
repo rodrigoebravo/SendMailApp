@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace Entidades
 {
@@ -11,13 +12,17 @@ namespace Entidades
         public int Avaible { get; set; }
         public int Modificated { get; set; }
         public int New { get; set; }
+        public bool Enviado { get; set; }
+        public DateTime? HoraEnvio { get; set; }
         #endregion
 
         #region Constructores
         private Email()
         {
-            Modificated = 0;
-            New = 1;
+            this.Modificated = 0;
+            this.New = 1;
+            this.Enviado = false;
+            this.HoraEnvio = null;
         }
         public Email(string nombre, string direccion, string descripcion, int avaible) : this()
         {

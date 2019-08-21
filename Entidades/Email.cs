@@ -13,7 +13,7 @@ namespace Entidades
         public int Modificated { get; set; }
         public int New { get; set; }
         public bool Enviado { get; set; }
-        public DateTime? HoraEnvio { get; set; }
+        public DateTime? HoraProceso { get; set; }
         #endregion
 
         #region Constructores
@@ -22,7 +22,7 @@ namespace Entidades
             this.Modificated = 0;
             this.New = 1;
             this.Enviado = false;
-            this.HoraEnvio = null;
+            this.HoraProceso = null;
         }
         public Email(string nombre, string direccion, string descripcion, int avaible) : this()
         {
@@ -41,7 +41,7 @@ namespace Entidades
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("{0}||{1}", this.DireccionEmail, this.Nombre);
+            sb.AppendFormat("{0} | {1} | {2}", this.DireccionEmail, this.Nombre, this.HoraProceso);
             return sb.ToString();
         }
         #endregion

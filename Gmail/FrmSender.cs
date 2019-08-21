@@ -22,6 +22,11 @@ namespace Gmail
             try
             {
                 manejador.Emails = new Xml().Abrir(path);
+                foreach (var item in manejador.Emails)
+                {
+                    item.Enviado = false;
+                    item.HoraProceso = null;
+                }
             }
             catch (Exception ex)
             {
@@ -94,10 +99,74 @@ namespace Gmail
 
         private void btnIniciar_Click(object sender, EventArgs e)
         {
-
-            //ProcesoPrincipal.Instancia.Comenzar(new Dato(txtEmail.Text, txtContraseña.Text, string.Empty, string.Empty, manejador.Emails));
+            if (this.manejador.Estado == EstadoProceso.Detenido)
+                return;
+            if (this.btnIniciar.Text.Equals("Pausar"))
+            {
+                this.manejador.PausarProceso();
+                this.btnIniciar.Text="Reiniciar";
+                return;
+            }
+            if (this.btnIniciar.Text.Equals("Reiniciar"))
+            {
+                this.manejador.ReiniciarProceso();
+                this.btnIniciar.Text = "Pausar";
+                return;
+            }
             if (this.manejador.Cant > 0)
-                this.manejador.Comenzar(false);
+            {
+                //this.tmrProceso.Enabled = true;
+                this.manejador.Comenzar();
+                this.btnIniciar.Text = "Pausar";
+                return;
+            }
+        }
+
+        private void HabilitarControles()
+        {
+            this.btnAdd.Enabled = true;
+            this.btnCancelAll.Enabled = true;
+            this.btnConectar.Enabled = true;
+            this.btnDesconectar.Enabled = true;
+            this.btnDetener.Enabled = true;
+            this.btnSelectAll.Enabled = true;
+            this.brnEliminar.Enabled = true;
+        }
+
+        private void DeshabilitarControles()
+        {
+            this.btnAdd.Enabled = false;
+            this.btnCancelAll.Enabled = false;
+            this.btnConectar.Enabled = false;
+            this.btnDesconectar.Enabled = false;
+            this.btnDetener.Enabled = true;
+            this.btnSelectAll.Enabled = false;
+            this.brnEliminar.Enabled = false;
+        }
+
+        private void tmrProceso_Tick(object sender, EventArgs e)
+        {
+            if (this.manejador.Estado == EstadoProceso.Procesando)
+            {
+                DeshabilitarControles();
+                richLog.Text = string.Empty;
+                if (ManejadorEmails.EmailsAux != null)
+                    foreach (var item in ManejadorEmails.EmailsAux)
+                    {
+                        if (item.Enviado)
+                            richLog.AppendText(item.ToString() + Environment.NewLine);
+                    }
+            }
+            else
+            {
+                HabilitarControles();
+                //this.tmrProceso.Enabled = false;
+            }
+        }
+
+        private void btnDetener_Click(object sender, EventArgs e)
+        {
+            this.manejador.DetenerProceso();
         }
     }
 

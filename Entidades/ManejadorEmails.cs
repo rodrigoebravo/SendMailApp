@@ -6,25 +6,27 @@ namespace Entidades
 {
     public class ManejadorEmails
     {
+
+
         #region Propiedades
         public List<Email> Emails { get; set; }
         public int Cant { get; set; }
 
-        private static Timer timer = new Timer(comenzarEnvioConTimer);
-        private const int TIEMPO_ESPERA_SEGUNDOS = 15;
-        private static int index = 0;
-        private static List<Email> EmailsAux { get; set; }
+        public static int Index { get { return Controlador.Instance.ObtenerIndex(); } private set { Controlador.Instance.SetIndex(value); } }
+
+        public static List<Email> EmailsAux { get; set; }
+        public EstadoProceso Estado { get { return Controlador.Instance.GetEstado(); } }
         #endregion
+
 
         #region Constructores
         public ManejadorEmails()
         {
-            Emails = new List<Email>();
-            Cant = 0;
+            this.Emails = new List<Email>();
+            this.Cant = 0;
         }
         #endregion
-
-        #region Metodos
+        #region OperadoresSobrecargados
         /// <summary>
         /// Agrega a la lista de Emails de manejador el Email del parametro si no existe.
         /// </summary>
@@ -62,47 +64,35 @@ namespace Entidades
             }
             return false;
         }
+        #endregion
 
-        /// <summary>
-        /// Itera sobre la lista de mails de esta instancia de manejador, enviando cada uno en intervalos de 15 segundos
-        /// </summary>
-        private void ComenzarSinTimer()
+        #region Metodos
+
+        public void PausarProceso()
         {
-            for (int i = 0; i < this.Emails.Count; i++)
-            {
-                this.Emails[i].Enviado = ConexionApiGmail.SendMail(this.Emails[i].DireccionEmail, "pathTemplate");
-
-                if (this.Emails[i].Enviado)
-                    this.Emails[i].HoraEnvio = DateTime.Now;
-
-                //TODO: Loggear el envio.
-
-                //Espera 15 segundos antes de enviar el siguiente
-                Thread.Sleep(TimeSpan.FromSeconds(15));
-            }
+            Controlador.Instance.SetEstado(EstadoProceso.Pausado);
+            Controlador.Instance.FinalizarTimer();
         }
-
-        /// <summary>
-        /// Itera sobre la lista de mails, utilizando el index de la lista, enviando en intervalos de 15 segundos
-        /// </summary>
-        private void ComenzarConTimer()
+        public void ReiniciarProceso()
         {
-            //Necesario usar EmailsAux ya que es estatico
-            EmailsAux = Emails;
-            timer = new Timer(comenzarEnvioConTimer);
-            timer.Change(TimeSpan.Zero, TimeSpan.Zero);
+            Controlador.Instance.SetEstado(EstadoProceso.Iniciado);
+            Controlador.Instance.ReiniciarTimer(comenzarEnvioConTimer);
+        }
+        public void DetenerProceso()
+        {
+            Controlador.Instance.SetEstado(EstadoProceso.Detenido);
+            Controlador.Instance.EliminarTimer();
         }
 
         /// <summary>
         /// Comenzará el proceso con o sin timer segun se indique
         /// </summary>
-        /// <param name="timer"></param>
-        public void Comenzar(bool timer)
+        /// <param name="usarTimer"></param>
+        public void Comenzar()
         {
-            if (timer)
-                this.ComenzarConTimer();
-            else
-                this.ComenzarSinTimer();
+            //Necesario usar EmailsAux ya que es estatico
+            EmailsAux = Emails;
+            Controlador.Instance.InicializarControl(comenzarEnvioConTimer);
         }
 
         /// <summary>
@@ -114,36 +104,49 @@ namespace Entidades
             bool continuar = true;
             try
             {
+                Controlador.Instance.SetEstado(EstadoProceso.Procesando);
                 var contacto = TraerProximoContacto();
                 continuar = !string.IsNullOrEmpty(contacto);
                 if (!continuar)
                 {
-                    timer.Dispose();
+                    Controlador.Instance.FinalizarTimer();
+                    Controlador.Instance.SetEstado(EstadoProceso.FinalizadoOk);
                     return;
                 }
-                EmailsAux[index - 1].Enviado = ConexionApiGmail.SendMail(contacto, string.Empty);
-                EmailsAux[index - 1].HoraEnvio = DateTime.Now;
+                //TODO: descomentar linea para enviar correos
+                EmailsAux[Index - 1].Enviado = true;// ConexionApiGmail.SendMail(contacto, string.Empty);
+                EmailsAux[Index - 1].HoraProceso = DateTime.Now;
+                Controlador.Instance.SumarCantidadMailsEnviadosHoy();
+                Controlador.Instance.GuardarIndex();
             }
             catch (Exception)
             {
-                // LOGGGER --> 
+                // TODO: Guardar en archivo LOG
             }
             finally
             {
-                if (continuar)
-                    timer.Change(TimeSpan.FromSeconds(TIEMPO_ESPERA_SEGUNDOS), TimeSpan.Zero);
+                if (Controlador.Instance.PausarProcesoPorHoy())
+                {
+                    Controlador.Instance.InicializarCantidadEnviadosHoy();
+                    Controlador.Instance.Esperar24Horas();
+                }
+                else if (continuar)
+                {
+                    Controlador.Instance.EsperarSegundos();
+                }
             }
         }
+
         /// <summary>
         /// Trae, por index, el siguiente contacto guardando el valor para el proximo contacto;
         /// </summary>
         /// <returns></returns>
         private static string TraerProximoContacto()
         {
-            if (index < EmailsAux.Count)
+            if (Index < EmailsAux.Count)
             {
-                var contacto = EmailsAux[index].DireccionEmail;
-                index++;
+                var contacto = EmailsAux[Index].DireccionEmail;
+                Index++;
                 return contacto;
             }
             return string.Empty;

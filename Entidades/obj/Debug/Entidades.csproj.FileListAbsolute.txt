@@ -25,3 +25,4 @@ C:\Users\usuario\Desktop\Proyecto final\Entidades\bin\Debug\Newtonsoft.Json.xml
 C:\Users\usuario\Desktop\Proyecto final\Entidades\obj\Debug\Entidades.csproj.CoreCompileInputs.cache
 C:\Users\usuario\Desktop\Proyecto final\Entidades\obj\Debug\Entidades.dll
 C:\Users\usuario\Desktop\Proyecto final\Entidades\obj\Debug\Entidades.pdb
+C:\Users\usuario\Desktop\Proyecto final\Entidades\obj\Debug\Entidades.csprojResolveAssemblyReference.cache

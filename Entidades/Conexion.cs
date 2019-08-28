@@ -48,7 +48,7 @@ namespace Entidades
     }
 	public static class EnvioMailHelper
 	{
-		public static void Enviar(string from, string fromName, string to, string subject, string body, bool isBodyHtml = true, MailPriority mailPriority = MailPriority.Normal, string[] adjuntos = null)
+		public static bool Enviar(string from, string fromName, string to, string subject, string body, bool isBodyHtml = true, MailPriority mailPriority = MailPriority.Normal, string[] adjuntos = null)
 		{
 			var threadSendMails = new Thread(delegate ()
 			{
@@ -95,7 +95,7 @@ namespace Entidades
 				}
 				catch (Exception ex)
 				{
-					ex.Message.ToString();
+					throw ex;
 				}
 			})
 			{
@@ -103,6 +103,7 @@ namespace Entidades
 			};
 
 			threadSendMails.Start();
+			return true;
 		}
 	}
 }

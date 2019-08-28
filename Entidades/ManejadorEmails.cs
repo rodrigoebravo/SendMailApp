@@ -16,8 +16,8 @@ namespace Entidades
 
         public static List<Email> EmailsAux { get; set; }
         public EstadoProceso Estado { get { return Controlador.Instance.GetEstado(); } }
-        #endregion
 
+        #endregion
 
         #region Constructores
         public ManejadorEmails()
@@ -26,6 +26,7 @@ namespace Entidades
             this.Cant = 0;
         }
         #endregion
+
         #region OperadoresSobrecargados
         /// <summary>
         /// Agrega a la lista de Emails de manejador el Email del parametro si no existe.
@@ -113,9 +114,10 @@ namespace Entidades
                     Controlador.Instance.SetEstado(EstadoProceso.FinalizadoOk);
                     return;
                 }
-                //TODO: descomentar linea para enviar correos
-                EmailsAux[Index - 1].Enviado = true;// ConexionApiGmail.SendMail(contacto, string.Empty);
-                EmailsAux[Index - 1].HoraProceso = DateTime.Now;
+				//TODO: descomentar linea para enviar correos
+				//EmailsAux[Index - 1].Enviado = true;// ConexionApiGmail.SendMail(contacto, string.Empty);
+				EmailsAux[Index - 1].Enviado = EnvioMailHelper.Enviar("", "", contacto, "subject", "<h1>Body</h1><br>Test");
+				EmailsAux[Index - 1].HoraProceso = DateTime.Now;
                 Controlador.Instance.SumarCantidadMailsEnviadosHoy();
                 Controlador.Instance.GuardarIndex();
             }
